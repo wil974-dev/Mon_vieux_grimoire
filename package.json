@@ -1,0 +1,24 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "Projet Mon Vieux Grimoire",
+    "homepage": "https://github.com/wil974-dev/Mon_vieux_grimoire#readme",
+    "bugs": {
+        "url": "https://github.com/wil974-dev/Mon_vieux_grimoire/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wil974-dev/Mon_vieux_grimoire.git"
+    },
+    "license": "ISC",
+    "author": "GRONDIN WILLIAM",
+    "type": "commonjs",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server.js"
+    },
+    "dependencies": {
+        "express": "^5.1.0"
+    }
+}
