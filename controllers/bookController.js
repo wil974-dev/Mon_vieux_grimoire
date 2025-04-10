@@ -34,10 +34,6 @@ exports.getAllBook = (req, res, next) => {
         .catch((error) => res.status(400).json({ error: error }));
 };
 
-exports.signup = (req, res, next) => {};
-
-exports.login = (req, res, next) => {};
-
 exports.bestRating = (req, res, next) => {};
 
 exports.rating = (req, res, next) => {};

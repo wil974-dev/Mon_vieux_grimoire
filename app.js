@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bookRoutes = require('./routes/bookRoute');
+const userRoutes = require('./routes/userRoute');
+
 require('dotenv').config();
 
+const app = express();
 mongoose
     .connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
@@ -10,11 +13,6 @@ mongoose
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-const app = express();
-
-app.use(express.json());
-app.use('/api/books', bookRoutes);
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,5 +26,9 @@ app.use((req, res, next) => {
     );
     next();
 });
+
+app.use(express.json());
+app.use('/api/books', bookRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;

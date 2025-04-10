@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bookCtrl = require('../controllers/bookController');
-
-router.post('/api/auth/signup', bookCtrl.signup);
-
-router.post('/api/auth/login', bookCtrl.login);
+const auth = require('../middleware/auth');
 
 router.get('/', bookCtrl.getAllBook);
 
@@ -12,12 +9,12 @@ router.get('/:id', bookCtrl.getOneBook);
 
 router.get('/bestrating', bookCtrl.bestRating);
 
-router.post('/', bookCtrl.createBook);
+router.post('/', auth, bookCtrl.createBook);
 
-router.put('/:id', bookCtrl.modifyBook);
+router.put('/:id', auth, bookCtrl.modifyBook);
 
-router.delete('/:id', bookCtrl.deleteBook);
+router.delete('/:id', auth, bookCtrl.deleteBook);
 
-router.post('/:id/rating', bookCtrl.rating);
+router.post('/:id/rating', auth, bookCtrl.rating);
 
 module.exports = router;
