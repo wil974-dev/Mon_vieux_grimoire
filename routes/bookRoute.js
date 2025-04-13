@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bookCtrl = require('../controllers/bookController');
 const auth = require('../middleware/auth');
-//const multer = require('../middleware/mulder-config');
-const converWebP = require('../middleware/converWebP');
+const multer = require('../middleware/mulder-config');
 
 router.get('/', bookCtrl.getAllBook);
 
@@ -11,9 +10,9 @@ router.get('/:id', bookCtrl.getOneBook);
 
 router.get('/bestrating', bookCtrl.bestRating);
 
-router.post('/', auth, converWebP, bookCtrl.createBook);
+router.post('/', auth, multer, bookCtrl.createBook);
 
-router.put('/:id', auth, converWebP, bookCtrl.modifyBook);
+router.put('/:id', auth, multer, bookCtrl.modifyBook);
 
 router.delete('/:id', auth, bookCtrl.deleteBook);
 
