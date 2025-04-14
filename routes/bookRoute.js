@@ -6,9 +6,9 @@ const multer = require('../middleware/mulder-config');
 
 router.get('/', bookCtrl.getAllBook);
 
-router.get('/:id', bookCtrl.getOneBook);
-
 router.get('/bestrating', bookCtrl.bestRating);
+
+router.get('/:id', bookCtrl.getOneBook);
 
 router.post('/', auth, multer, bookCtrl.createBook);
 
