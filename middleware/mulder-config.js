@@ -18,12 +18,10 @@ module.exports = (req, res, next) => {
         }
 
         const imageDir = path.join(__dirname, '../images');
-        console.log(req.file.originalname);
         const originalName = req.file.originalname
             .split(' ')
             .join('_')
             .split('.')[0];
-        console.log(originalName);
         const filename = `${originalName}_${Date.now()}.webp`;
         const outputPath = path.join(imageDir, filename);
 

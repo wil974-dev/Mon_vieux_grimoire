@@ -25,7 +25,7 @@ exports.modifyBook = (req, res, next) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => {
             if (book.userId != req.auth.userId) {
-                return res.status(401).json({ message: 'Not authorized' });
+                return res.status(403).json({ message: 'Not authorized' });
             }
 
             let bookObject;
@@ -130,17 +130,21 @@ exports.rating = (req, res, next) => {
             }
 
             let ratingTotal = 0;
-            let nbrRating = 0;
-            book.ratings.map((rating) => {
-                ratingTotal += rating;
-                nbrRating++;
+
+            book.ratings.forEach((rating) => {
+                ratingTotal += rating.grade;
             });
-            ratingTotal = ratingTotal / nbrRating;
+
+            const newGrade = req.body.rating;
+            ratingTotal += newGrade;
+            const nbrNote = book.ratings.length + 1;
+
+            const newAverage = ratingTotal / nbrNote;
             book.ratings.push({
                 userId: req.auth.userId,
-                grade: req.body.rating,
-                averageRating: ratingTotal,
+                grade: newGrade,
             });
+            book.averageRating = newAverage;
             book.save()
                 .then((book) => res.status(201).json(book))
                 .catch((error) => res.status(500).json({ error: error }));
