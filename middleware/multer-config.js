@@ -8,9 +8,7 @@ const upload = multer({ storage }).single('image');
 module.exports = (req, res, next) => {
     upload(req, res, (err) => {
         if (err) {
-            return res
-                .status(400)
-                .json({ error: 'Erreur lors du téléchargement de l’image.' });
+            return res.status(400).json({ error: err.message });
         }
 
         if (!req.file) {
@@ -32,9 +30,9 @@ module.exports = (req, res, next) => {
                 req.file.filename = filename;
                 next();
             })
-            .catch(() => {
+            .catch((error) => {
                 res.status(500).json({
-                    error: 'Erreur lors de la compression de l’image.',
+                    error: error,
                 });
             });
     });

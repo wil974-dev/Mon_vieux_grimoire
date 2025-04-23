@@ -1,4 +1,4 @@
-const Book = require('../models/book');
+const Book = require('../models/Book');
 const fs = require('fs');
 
 exports.createBook = (req, res, next) => {
@@ -63,16 +63,16 @@ exports.modifyBook = (req, res, next) => {
                 .then(() =>
                     res.status(200).json({ message: 'Objet modifié !' })
                 )
-                .catch((error) => res.status(400).json({ error }));
+                .catch((error) => res.status(400).json({ error: error }));
         })
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) => res.status(500).json({ error: error }));
 };
 
 exports.deleteBook = (req, res, next) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => {
             if (book.userId != req.auth.userId) {
-                return res.status(401).json({ message: 'Not aurhorized' });
+                return res.status(403).json({ message: 'Not authorized' });
             } else {
                 const filename = book.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
@@ -83,7 +83,7 @@ exports.deleteBook = (req, res, next) => {
                             });
                         })
                         .catch((error) => {
-                            res.status(401).json({ error: error });
+                            res.status(400).json({ error: error });
                         });
                 });
             }
@@ -124,9 +124,7 @@ exports.rating = (req, res, next) => {
             );
 
             if (noted) {
-                return res
-                    .status(400)
-                    .json({ message: 'Vous avez déjà noté ce livre.' });
+                return res.json({ message: 'Vous avez déjà noté ce livre.' });
             }
 
             let ratingTotal = 0;
