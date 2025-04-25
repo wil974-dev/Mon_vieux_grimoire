@@ -1,7 +1,7 @@
 const Book = require('../models/Book');
 const fs = require('fs');
 
-exports.createBook = (req, res, next) => {
+exports.createBook = (req, res) => {
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
     delete bookObject._userId;
@@ -21,7 +21,7 @@ exports.createBook = (req, res, next) => {
         });
 };
 
-exports.modifyBook = (req, res, next) => {
+exports.modifyBook = (req, res) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => {
             if (book.userId != req.auth.userId) {
@@ -68,7 +68,7 @@ exports.modifyBook = (req, res, next) => {
         .catch((error) => res.status(500).json({ error: error }));
 };
 
-exports.deleteBook = (req, res, next) => {
+exports.deleteBook = (req, res) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => {
             if (book.userId != req.auth.userId) {
@@ -93,19 +93,19 @@ exports.deleteBook = (req, res, next) => {
         });
 };
 
-exports.getOneBook = (req, res, next) => {
+exports.getOneBook = (req, res) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => res.status(200).json(book))
         .catch((error) => res.status(404).json({ error: error }));
 };
 
-exports.getAllBook = (req, res, next) => {
+exports.getAllBook = (req, res) => {
     Book.find()
         .then((books) => res.status(200).json(books))
         .catch((error) => res.status(400).json({ error: error }));
 };
 
-exports.bestRating = (req, res, next) => {
+exports.bestRating = (req, res) => {
     Book.find()
         .then((books) => {
             const top3BestRating = books
@@ -116,7 +116,7 @@ exports.bestRating = (req, res, next) => {
         .catch((error) => res.status(400).json({ error: error }));
 };
 
-exports.rating = (req, res, next) => {
+exports.rating = (req, res) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => {
             const noted = book.ratings.find(
@@ -136,7 +136,6 @@ exports.rating = (req, res, next) => {
             const newGrade = req.body.rating;
             ratingTotal += newGrade;
             const nbrNote = book.ratings.length + 1;
-
             const newAverage = ratingTotal / nbrNote;
             book.ratings.push({
                 userId: req.auth.userId,
